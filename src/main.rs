@@ -24,11 +24,33 @@ fn main() {
             // ask user for a guess
             user_move(&mut board, "X".to_string());
             computer_move(&mut board, "O".to_string());
+            draw_board(&mut board);
+
+            if is_winner(&mut board, "X".to_string()) {
+                println!("You win!!");
+                break();
+            } else if is_winner(&mut board, "O".to_string()){
+                println!("Computer wins :(");
+                break();
+            }
         } else {
             user_move(&mut board, "O".to_string());
             computer_move(&mut board, "X".to_string());
+            draw_board(&mut board);
+
+            if is_winner(&mut board, "O".to_string()) {
+                println!("You win!!");
+                break();
+            } else if is_winner(&mut board, "X".to_string()){
+                println!("Computer wins :(");
+                break();
+            }
         }
         tot_turns = tot_turns + 1;
+        println!("");
+        if tot_turns == 9 {
+            println!("It's a tie!");
+        }
     }
     // todo: win condition
 }
@@ -40,6 +62,29 @@ fn welcome_message() {
 // return letters
 fn return_letters(one: String, two: String) -> (String, String) {
     (one, two)
+}
+
+// check for a winner
+fn is_winner(board: &mut [String], letter: String) -> bool {
+    if board[0] == letter && board[1] == letter && board[2] == letter { // horizontal - top
+        return true;
+    } else if board[3] == letter && board[4] == letter && board[5] == letter { // horizontal - middle
+        return true;
+    } else if board[6] == letter && board[7] == letter && board[8] == letter { // horizontal - bottom
+        return true;
+    } else if board[0] == letter && board[3] == letter && board[6] == letter { // verical - left
+        return true;
+    } else if board[1] == letter && board[4] == letter && board[7] == letter { // verical - middle
+        return true;
+    } else if board[2] == letter && board[5] == letter && board[8] == letter { // verical - right
+        return true;
+    } else if board[0] == letter && board[4] == letter && board[8] == letter { // diagonal - top left to bottom right
+        return true;
+    } else if board[2] == letter && board[4] == letter && board[6] == letter { // diagonal - bottom left to top right
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // checks if the letter is equal to X or O
@@ -118,7 +163,7 @@ fn can_make_a_move(board: &mut [String], i: usize) -> bool {
 }
 
 fn user_move(board: &mut [String], user_letter: String) -> () {
-    println!("Where would you like to move? Enter a value 1-9");
+    println!("Where would you like to move? Enter a value 1-9:");
 
     let mut user_input = String::new();
 
