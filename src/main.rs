@@ -28,8 +28,9 @@ fn main() {
             user_move(&mut board, "O".to_string());
             computer_move(&mut board, "X".to_string());
         }
-
+        tot_turns = tot_turns + 1;
     }
+    // todo: win condition
 }
 
 fn welcome_message() {
@@ -50,9 +51,9 @@ fn letter_is_valid(letter: &str) -> bool {
     }
 }
 
-//
+// returms tuple of assigned letters
 fn assign_letters(letter: &str) -> (String, String) {
-    if letter == "X" {
+    if letter.trim() == "X" {
         return return_letters("X".to_string(), "O".to_string());
     } else {
         return return_letters("O".to_string(), "X".to_string());
@@ -95,9 +96,21 @@ fn update_board(board: &mut [String], i: usize, letter: String) -> () {
     board[i] = letter;
 }
 
+// checks for board input out of bounds
+fn is_out_of_bounds( i: usize ) -> bool {
+    // change logic to read a result instead
+    if i>=9 || i<0 {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 // checks that the board space is empty
 fn can_make_a_move(board: &mut [String], i: usize) -> bool {
-    if board[i] == "" {
+    if is_out_of_bounds(i) {
+        return false;
+    } else if board[i] == "" {
         return true;
     } else {
         return false;
@@ -108,29 +121,36 @@ fn user_move(board: &mut [String], user_letter: String) -> () {
     println!("Where would you like to move? Enter a value 1-9");
 
     let mut user_input = String::new();
-    io::stdin().read_line(&mut user_input)
-    .expect("Failed to read line");
 
-    let user_input: usize = user_input.trim().parse()
-        .expect("Please type a number!");
+    loop {
+        io::stdin().read_line(&mut user_input)
+        .expect("Failed to read line");
 
-    let move_space = user_input - 1;
+        let user_input: usize = user_input.trim().parse()
+            .expect("Please type a number!");
 
-    if can_make_a_move(board, move_space) {
-        update_board(board, move_space, user_letter);
-    } else {
-        println!("Not a valid move! Enter a number for a free space!");
+        let move_space = user_input - 1;
+
+        if can_make_a_move(board, move_space) {
+            update_board(board, move_space, user_letter);
+            break();
+        } else {
+            println!("Not a valid move! Enter a number for a free space!");
+        }
     }
 }
 
 fn computer_move(board: &mut [String], computer_letter: String) {
-    let rand_number = rand::thread_rng().gen_range(0, 9);
+    loop {
+        let rand_number = rand::thread_rng().gen_range(0, 9);
 
-    if can_make_a_move(board, rand_number) {
-        println!("Computer draws a {} at space {}", computer_letter, rand_number);
-        update_board(board, rand_number, computer_letter);
-    } else {
-        println!("Something bad happened :(");
+        if can_make_a_move(board, rand_number) {
+            println!("Computer draws a {} at space {}", computer_letter, rand_number+1);
+            update_board(board, rand_number, computer_letter);
+            break();
+        } else {
+            // do nothing?
+        }
     }
 }
 
