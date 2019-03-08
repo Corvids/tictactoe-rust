@@ -1,0 +1,8 @@
+[package]
+name = "tictactoe"
+version = "0.1.0"
+authors = ["Jennifer Joo <jenjoo@microsoft.com>"]
+edition = "2018"
+
+[dependencies]
+rand = "0.3.14"
