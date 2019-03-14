@@ -144,7 +144,7 @@ fn update_board(board: &mut [String], i: usize, letter: String) -> () {
 // checks for board input out of bounds
 fn is_out_of_bounds( i: usize ) -> bool {
     // change logic to read a result instead
-    if i>=9 || i<0 {
+    if i>=9 {
         return true;
     } else {
         return false;
