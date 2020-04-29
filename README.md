@@ -5,5 +5,3 @@ To run this code, make sure that you have the latest version of [Rust](https://w
 ```Rust
 cargo run
 ```
-
-from your favorite CLI.
